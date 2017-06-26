@@ -34,24 +34,23 @@ public class MifareActivity extends AppCompatActivity implements OnClickListener
         setContentView(R.layout.activity_mifare);
         Log.d(TAG, "in oncreate");
        
-        start_demo = (Button)findViewById(R.id.button_mifare_set);
+        start_demo = (Button) findViewById(R.id.button_mifare_set);
         start_demo.setOnClickListener(this);
         start_demo.setEnabled(false);
         
-        main_info = (TextView)findViewById(R.id.textView_mifare_info);
+        main_info = (TextView) findViewById(R.id.textView_mifare_info);
         main_info.setMovementMethod(ScrollingMovementMethod.getInstance());
-        block_nr = (EditText)findViewById(R.id.editText_mifare_block);
+        block_nr = (EditText) findViewById(R.id.editText_mifare_block);
         
         try {
 			Thread.sleep(100);
-		} catch (InterruptedException e) {
+		} catch (InterruptedException ignored) {
 
 		}
         
         Log.d(TAG, "begin to init");
 		dev = R6Manager.getMifareInstance(MIFARE);
-        if(dev.InitDev() != 0)
-        {
+        if (dev.InitDev() != 0) {
         	main_info.setText(R.string.msg_error_dev);
         	return;
         }
@@ -60,8 +59,7 @@ public class MifareActivity extends AppCompatActivity implements OnClickListener
     }
    
     @Override
-    public void onDestroy()
-    {
+    public void onDestroy() {
     	dev.ReleaseDev();
     	super.onDestroy();
     	Intent i = getIntent();
@@ -72,16 +70,12 @@ public class MifareActivity extends AppCompatActivity implements OnClickListener
 	@Override
 	public void onClick(View arg0) {
 
-		if(arg0 == start_demo)
-		{
+		if (arg0 == start_demo) {
 			int block;
 //			main_info.setText(R.string.msg_start);
-			try
-			{
+			try {
 				block = Integer.valueOf(block_nr.getText().toString()).intValue();
-			}
-			catch(NumberFormatException p)
-			{
+			} catch (NumberFormatException p) {
 				main_info.setText(R.string.msg_error_input);
 				return;
 			}
@@ -91,8 +85,7 @@ public class MifareActivity extends AppCompatActivity implements OnClickListener
 //				block_nr.setText("" + block);
 				return;
 			}*/
-			if(block >= 64)
-			{
+			if (block >= 64) {
 //				block = 63;
 //				block_nr.setText("" + block);
 				Toast t = Toast.makeText(getApplicationContext(), "Rang 0 ~ 63", Toast.LENGTH_SHORT);
@@ -103,14 +96,12 @@ public class MifareActivity extends AppCompatActivity implements OnClickListener
 			
 			//search a valid card
 			byte[] ID = dev.SearchCard();
-			if(ID == null)
-			{
+			if (ID == null) {
 				main_info.setText(R.string.msg_mifare_error_nocard);
 				return;
 			}
 			String IDString = new String(" 0x");
-			for(byte a : ID)
-			{
+			for (byte a : ID) {
 				IDString += String.format("%02X", a);
 			}
 			main_info.setText(R.string.msg_mifare_ok_findcard);
@@ -119,12 +110,10 @@ public class MifareActivity extends AppCompatActivity implements OnClickListener
 			
 			//auth the block to read/write
 			byte[] key = new byte[6];
-			for(int i = 0; i < 6; i++)
-			{
-				key[i] = (byte)0xff;
+			for (int i = 0; i < 6; i++) {
+				key[i] = (byte) 0xff;
 			}
-			if(dev.AuthenticationCardByKey(AUTH_TYPEA, ID, block, key) != 0)
-			{
+			if (dev.AuthenticationCardByKey(AUTH_TYPEA, ID, block, key) != 0) {
 				main_info.append(getString(R.string.msg_mifare_error_auth));
 				return;
 			}
@@ -134,13 +123,11 @@ public class MifareActivity extends AppCompatActivity implements OnClickListener
 			//write data to block directly
 			byte[] data = new byte[16];
 			String dataString = new String();
-			for(int i = 0; i < 16; i++)
-			{
-				data[i] = (byte)(i + 10);
+			for (int i = 0; i < 16; i++) {
+				data[i] = (byte) (i + 10);
 				dataString += String.format(" 0x%02x", data[i]);
 			}
-			if(dev.WriteBlock(block, data) != 0)
-			{
+			if (dev.WriteBlock(block, data) != 0) {
 				main_info.append(getString(R.string.msg_mifare_error_writeblock));
 				return;
 			}
@@ -150,14 +137,12 @@ public class MifareActivity extends AppCompatActivity implements OnClickListener
 			
 			//read data from the same block
 			byte[] getdata = dev.ReadBlock(block);
-			if(getdata == null)
-			{
+			if (getdata == null) {
 				main_info.append(getString(R.string.msg_mifare_error_readblock));
 				return;
 			}
 			String getdataString = new String();
-			for(byte i : getdata)
-			{
+			for (byte i : getdata) {
 				getdataString += String.format(" 0x%02x", i);
 			}
 			main_info.append(getString(R.string.msg_mifare_ok_readblock));
@@ -165,8 +150,7 @@ public class MifareActivity extends AppCompatActivity implements OnClickListener
 			main_info.append("\n\n");
 			
 			//wrtie a value to block
-			if(dev.WriteBlockValue(block, 66) != 0)
-			{
+			if (dev.WriteBlockValue(block, 66) != 0) {
 				main_info.append(getString(R.string.msg_mifare_error_writevalue));
 				return;
 			}
@@ -175,8 +159,7 @@ public class MifareActivity extends AppCompatActivity implements OnClickListener
 			
 			//read the value
 			int value[] = dev.ReadBlockValue(block);
-			if(value == null)
-			{
+			if (value == null) {
 				main_info.append(getString(R.string.msg_mifare_error_readvalue));
 				return;
 			}
@@ -184,8 +167,7 @@ public class MifareActivity extends AppCompatActivity implements OnClickListener
 			main_info.append(String.format(" %d\n\n", value[0]));
 			
 			//increment the block's value
-			if(dev.IncrementBlockValue(block, 12) != 0)
-			{
+			if (dev.IncrementBlockValue(block, 12) != 0) {
 				main_info.append(getString(R.string.msg_mifare_error_incvalue));
 				return;
 			}
@@ -194,8 +176,7 @@ public class MifareActivity extends AppCompatActivity implements OnClickListener
 			
 			//read the value again
 			value = dev.ReadBlockValue(block);
-			if(value == null)
-			{
+			if (value == null) {
 				main_info.append(getString(R.string.msg_mifare_error_readvalue));
 				return;
 			}
@@ -203,8 +184,7 @@ public class MifareActivity extends AppCompatActivity implements OnClickListener
 			main_info.append(String.format(" %d\n\n", value[0]));
 			
 			//decrement the block's value
-			if(dev.DecrementBlockValue(block, 55) != 0)
-			{
+			if (dev.DecrementBlockValue(block, 55) != 0) {
 				main_info.append(getString(R.string.msg_mifare_error_decvalue));
 				return;
 			}
@@ -213,8 +193,7 @@ public class MifareActivity extends AppCompatActivity implements OnClickListener
 			
 			//read the value again
 			value = dev.ReadBlockValue(block);
-			if(value == null)
-			{
+			if (value == null) {
 				main_info.append(getString(R.string.msg_mifare_error_readvalue));
 				return;
 			}
@@ -222,8 +201,7 @@ public class MifareActivity extends AppCompatActivity implements OnClickListener
 			main_info.append(String.format(" %d\n\n", value[0]));
 			
 			//halt current card
-			if(dev.HaltCard() != 0)
-			{
+			if (dev.HaltCard() != 0) {
 				main_info.append(getString(R.string.msg_mifare_error_haltcard));
 				return;
 			}
