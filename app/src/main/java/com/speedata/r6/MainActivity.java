@@ -75,8 +75,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         setFalse();
         setCmdFalse();
-
-        etShow.setText("启动成功\n");
+        String startsuccess = getString(R.string.start_success) + "\n";
+        etShow.setText(startsuccess);
         getLast();
         try {
             Thread.sleep(100);
@@ -159,19 +159,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_init_dev:
                 int init = mIR6Manager.InitDevice();
-                etShow.append("上电:" + init + "\n");
+                String initdev = getString(R.string.power_on) + init + "\n";
+                etShow.append(initdev);
                 getLast();
                 break;
             case R.id.btn_release_dev:
                 mIR6Manager.ReleaseDevice();
-                etShow.append("已下电\n");
+                String release = getString(R.string.power_off) + "\n";
+                etShow.append(release);
                 getLast();
                 break;
             case R.id.btn_search_card:
                 byte[] sCard = mIR6Manager.SearchCard();
                 String sCards = "";
                 if (sCard == null) {
-                    etShow.append("未搜到或移除已读卡片" + "\n");
+                    String notfound = getString(R.string.not_found) + "\n";
+                    etShow.append(notfound);
                     getLast();
                     return;
                 }
@@ -187,7 +190,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.btn_deselect://将卡片移除有效范围
                 int outCard = mIR6Manager.Deselect();
-                etShow.append("移除卡片：" + outCard + "\n");
+                String remove = getString(R.string.remove) + outCard + "\n";
+                etShow.append(remove);
                 getLast();
                 break;
 
@@ -195,7 +199,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 byte[] eCard = mIR6Manager.ReadCard();
                 String eCards = "";
                 if (eCard == null) {
-                    etShow.append("未能读取卡片信息" + "\n");
+                    String failread = getString(R.string.fail_read) + "\n";
+                    etShow.append(failread);
                     getLast();
                     return;
                 }
@@ -214,7 +219,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String tk = etCmdInput.getText().toString();
                 int len = tk.length();
                 if (len % 2 != 0) {
-                    etShow.append("请确认命令是否正确" + "\n");
+                    String makesure = getString(R.string.make_sure) + "\n";
+                    etShow.append(makesure);
                     return;
                 }
                 byte[] cm = HexString2Bytes(tk);
