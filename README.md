@@ -10,7 +10,7 @@
 	点击进入后，在界面上方有五种卡片的对应按钮。其中，选择CPU卡后，继续在本界面进行操作，选择其他卡类则会跳转到其相应的界面。
 ###开发说明<br>
 	使用Android Studio的开发人员可直接在开发工具中打开相应的源码，参考源码进行开发。
-	不使用源码则需要在build.gradle文件中添加：compile’com.speedata:r6lib:1.5’
+	不使用源码则需要在build.gradle文件中添加：compile’com.speedata:r6lib:1.6’
     使用Eclipse的开发人员，需要把”eclipse源码“文件夹中的两个源码都导入开发工具，其中”r6lib“作为library，被r6程序源码调用。
 ###API文档<br>
 	详细的接口说明在showdoc，地址：https://www.showdoc.cc/11377?page_id=102430
