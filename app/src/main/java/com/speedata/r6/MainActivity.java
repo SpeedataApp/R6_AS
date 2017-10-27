@@ -171,17 +171,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_search_card:
                 byte[] sCard = mIR6Manager.SearchCard();
-                String sCards = "";
+                StringBuilder sCards = new StringBuilder();
                 if (sCard == null) {
                     String notfound = getString(R.string.not_found) + "\n";
                     etShow.append(notfound);
                     getLast();
                     return;
                 }
-                if (sCard != null) {
-                    for (byte i : sCard) {
-                        sCards += String.format("%02X", i);
-                    }
+                for (byte i : sCard) {
+                    sCards.append(String.format("%02X", i));
                 }
                 etShow.append(sCards + "\n");
                 getLast();
@@ -197,17 +195,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.btn_exec_rats:
                 byte[] eCard = mIR6Manager.ReadCard();
-                String eCards = "";
+                StringBuilder eCards = new StringBuilder();
                 if (eCard == null) {
                     String failread = getString(R.string.fail_read) + "\n";
                     etShow.append(failread);
                     getLast();
                     return;
                 }
-                if (eCard != null) {
-                    for (byte i : eCard) {
-                        eCards += String.format("%02X", i);
-                    }
+                for (byte i : eCard) {
+                    eCards.append(String.format("%02X", i));
                 }
                 etShow.append(eCards + "\n");
                 getLast();
@@ -231,9 +227,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     mIR6Manager.ReleaseDevice();
                 } else {
                     Log.i(TAG, "cmd retured value begin");
-                    String res = "";
+                    StringBuilder res = new StringBuilder();
                     for (byte i : xs) {
-                        res += String.format("%02x ", i);
+                        res.append(String.format("%02x ", i));
                     }
                     etShow.append(res + "\n");
                     getLast();
@@ -241,6 +237,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
 
                 break;
+
+                default:
+                    break;
 
         }
     }
