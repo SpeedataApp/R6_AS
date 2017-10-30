@@ -40,7 +40,7 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
     testCompile 'junit:junit:4.12'
-    compile 'com.speedata:r6lib:1.6'
+    compile 'com.speedata:r6lib:1.7'
 
 
 
