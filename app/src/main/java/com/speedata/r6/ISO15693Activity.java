@@ -1,5 +1,6 @@
 package com.speedata.r6;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -99,6 +100,7 @@ public class ISO15693Activity extends AppCompatActivity implements View.OnClickL
     }
 
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onClick(View arg0) {
 

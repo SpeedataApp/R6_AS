@@ -1,5 +1,6 @@
 package com.speedata.r6;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -67,6 +68,7 @@ public class MifareActivity extends AppCompatActivity implements OnClickListener
     }
     
 
+	@SuppressLint("DefaultLocale")
 	@Override
 	public void onClick(View arg0) {
 
@@ -74,7 +76,7 @@ public class MifareActivity extends AppCompatActivity implements OnClickListener
 			int block;
 //			main_info.setText(R.string.msg_start);
 			try {
-				block = Integer.valueOf(block_nr.getText().toString()).intValue();
+				block = Integer.valueOf(block_nr.getText().toString());
 			} catch (NumberFormatException p) {
 				main_info.setText(R.string.msg_error_input);
 				return;
@@ -100,12 +102,12 @@ public class MifareActivity extends AppCompatActivity implements OnClickListener
 				main_info.setText(R.string.msg_mifare_error_nocard);
 				return;
 			}
-			String IDString = new String(" 0x");
+			StringBuilder IDString = new StringBuilder(" 0x");
 			for (byte a : ID) {
-				IDString += String.format("%02X", a);
+				IDString.append(String.format("%02X", a));
 			}
 			main_info.setText(R.string.msg_mifare_ok_findcard);
-			main_info.append(IDString);
+			main_info.append(IDString.toString());
 			main_info.append("\n\n");
 			
 			//auth the block to read/write
@@ -122,17 +124,17 @@ public class MifareActivity extends AppCompatActivity implements OnClickListener
 			
 			//write data to block directly
 			byte[] data = new byte[16];
-			String dataString = new String();
+			StringBuilder dataString = new StringBuilder();
 			for (int i = 0; i < 16; i++) {
 				data[i] = (byte) (i + 10);
-				dataString += String.format(" 0x%02x", data[i]);
+				dataString.append(String.format(" 0x%02x", data[i]));
 			}
 			if (dev.WriteBlock(block, data) != 0) {
 				main_info.append(getString(R.string.msg_mifare_error_writeblock));
 				return;
 			}
 			main_info.append(getString(R.string.msg_mifare_ok_writeblock));
-			main_info.append(dataString);
+			main_info.append(dataString.toString());
 			main_info.append("\n\n");
 			
 			//read data from the same block
@@ -141,12 +143,12 @@ public class MifareActivity extends AppCompatActivity implements OnClickListener
 				main_info.append(getString(R.string.msg_mifare_error_readblock));
 				return;
 			}
-			String getdataString = new String();
+			StringBuilder getdataString = new StringBuilder();
 			for (byte i : getdata) {
-				getdataString += String.format(" 0x%02x", i);
+				getdataString.append(String.format(" 0x%02x", i));
 			}
 			main_info.append(getString(R.string.msg_mifare_ok_readblock));
-			main_info.append(getdataString);
+			main_info.append(getdataString.toString());
 			main_info.append("\n\n");
 			
 			//wrtie a value to block

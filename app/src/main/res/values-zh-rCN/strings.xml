@@ -9,7 +9,7 @@
     <string name="exec_rats">读卡</string>
     <string name="btn_deselect">移除卡片</string>
     <string name="show_window">[显示窗口]</string>
-    <string name="iso_15693">ISO_15693</string>
+    <string name="iso_15693">ISO15693</string>
     <string name="mifare">mifare</string>
     <string name="mifare_u">mifare_u</string>
     <string name="title_title">"当前选择的卡片类型: "</string>

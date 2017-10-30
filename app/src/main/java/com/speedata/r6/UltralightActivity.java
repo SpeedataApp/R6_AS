@@ -1,6 +1,7 @@
 package com.speedata.r6;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -61,13 +62,15 @@ public class UltralightActivity extends AppCompatActivity implements OnClickList
     	Intent i = getIntent();
     	setResult(RESULT_OK, i);
     }
+		@SuppressLint("SetTextI18n")
+		@Override
 		public void onClick(View arg0) {
 
 			if (arg0 == start_demo) {
 				int block;
 				main_info.setText("msg_start");
 				try {
-					block = Integer.valueOf(block_nr.getText().toString()).intValue();
+					block = Integer.valueOf(block_nr.getText().toString());
 				} catch(NumberFormatException p) {
 					main_info.setText("msg_error_input");
 					return;
@@ -86,12 +89,12 @@ public class UltralightActivity extends AppCompatActivity implements OnClickList
 					main_info.setText("msg_mifare_error_nocard");
 					return;
 				}
-				String IDString = new String(" 0x");
+				StringBuilder IDString = new StringBuilder(" 0x");
 				for (byte a : ID) {
-					IDString += String.format("%02X", a);
+					IDString.append(String.format("%02X", a));
 				}
 				main_info.setText("msg_mifare_ok_findcard");
-				main_info.append(IDString);
+				main_info.append(IDString.toString());
 				main_info.append("\n\n");
 				
 				//read data from the same block
@@ -100,42 +103,42 @@ public class UltralightActivity extends AppCompatActivity implements OnClickList
 					main_info.append(getString(R.string.msg_mifare_error_readblock));
 					return;
 				}
-				String getdataString = new String();
+				StringBuilder getdataString = new StringBuilder();
 				for (byte i : getdata) {
-					getdataString += String.format(" 0x%02x", i);
+					getdataString.append(String.format(" 0x%02x", i));
 				}
 				main_info.append(getString(R.string.msg_mifare_ok_readblock));
-				main_info.append(getdataString);
+				main_info.append(getdataString.toString());
 				main_info.append("\n\n"); 
 				
 				//write data to block directly
 				byte[] data = new byte[4];
-				String dataString = new String();
+				StringBuilder dataString = new StringBuilder();
 				for (int i = 0; i < 4; i++) {
 					data[i] = (byte) (i + 10);
-					dataString += String.format(" 0x%02x", data[i]);
+					dataString.append(String.format(" 0x%02x", data[i]));
 				}
 				if (dev.WriteBlock(block, data) != 0) {
 					main_info.append(getString(R.string.msg_mifare_error_writeblock));
 					return;
 				}
 				main_info.append(getString(R.string.msg_mifare_ok_writeblock));
-				main_info.append(dataString);
+				main_info.append(dataString.toString());
 				main_info.append("\n\n");
 				
 				//write compatibility data to block directly
 				byte[] data1 = new byte[16];
-				String dataString1 = new String();
+				StringBuilder dataString1 = new StringBuilder();
 				for (int i = 0; i < 16; i++) {
 					data1[i] = (byte) (i + 10);
-					dataString1 += String.format(" 0x%02x", data1[i]);
+					dataString1.append(String.format(" 0x%02x", data1[i]));
 				}
 				if (dev.compatibility_Write_Block(block, data1) != 0) {
 					main_info.append(getString(R.string.msg_mifare_error_compatibility_read));
 					return;
 				}
 				main_info.append(getString(R.string.msg_mifare_ok_compatibility_read));
-				main_info.append(dataString);
+				main_info.append(dataString.toString());
 				main_info.append("\n\n");
 				
 				//halt current card
