@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">R6非接卡HF</string>
+    <string name="app_name">非接卡HF_R6</string>
     <string name="cpu_a">CPU_A</string>
     <string name="cpu_b">CPU_B</string>
     <string name="message">显示信息</string>

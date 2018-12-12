@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">R6_Contactless Card_HF</string>
+    <string name="app_name">HF_R6</string>
     <string name="cpu_a">CPU_A</string>
     <string name="cpu_b">CPU_B</string>
     <string name="message">Show Message</string>
