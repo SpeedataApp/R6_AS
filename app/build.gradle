@@ -8,8 +8,8 @@ android {
         applicationId "com.speedata.r6"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -40,7 +40,7 @@ dependencies {
     })
     implementation 'com.android.support:appcompat-v7:28.0.0'
     testImplementation 'junit:junit:4.12'
-    implementation 'com.speedata:r6lib:2.0'
+    implementation 'com.speedata:r6lib:2.4'
 
 
 
